@@ -1,6 +1,7 @@
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 import requests
+import asyncio
 
 BOT_TOKEN = "8534778362:AAFRBJs6IEtOtsuoFBqQnbAfPVAiQcKC8ck"
 
@@ -23,9 +24,16 @@ async def like(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     uid = context.args[0]
 
+    # 🔄 instant waiting message
+    msg = await update.message.reply_text(
+        "wait..... 😊\n🤩 By Anurag Singh ...."
+    )
+
+    await asyncio.sleep(2)
+
     try:
         url = f"https://mukesh-ult-like.vercel.app/like?uid={uid}&region=ind&key=UDIT"
-        r = requests.get(url, timeout=15)
+        r = requests.get(url, timeout=20)
         data = r.json()
 
         text = (
@@ -40,13 +48,14 @@ async def like(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"daily_limit : 20 Like 1 uid\n\n"
             f"☠️ Developer Anurag Singh\n"
             "☠️ Insta @anuragkumarsinghofficial 💙\n"
-            "😍 Follow For More 🥰 "
+            "😍 Follow For More 🥰"
+            
         )
 
-        await update.message.reply_text(text)
+        await msg.edit_text(text)
 
-    except Exception:
-        await update.message.reply_text("❌ API / Network error")
+    except Exception as e:
+        await msg.edit_text("❌ Like API error / network issue")
 
 # ---------- INFO COMMAND ----------
 async def info(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -56,12 +65,23 @@ async def info(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     uid = context.args[0]
 
+    # 🔄 instant waiting message
+    msg = await update.message.reply_text(
+        "wait..... 😊\n🤩 By Anurag Singh ...."
+    )
+
+    await asyncio.sleep(2)
+
     try:
-        url = f"https://rohit-info.vercel.app/accinfo?uid={uid}&region=Ind"
-        r = requests.get(url, timeout=15)
+        url = f"http://danger-info-alpha.vercel.app/accinfo?uid={uid}&key=DANGERxINFO"
+        r = requests.get(url, timeout=20)
+
+        if r.status_code != 200:
+            await msg.edit_text("❌ Info API response error")
+            return
+
         data = r.json()
 
-        # Convert info JSON to clean text
         text = ""
         for k, v in data.items():
             text += f"{k} : {v}\n"
@@ -72,10 +92,10 @@ async def info(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "😍 Follow For More 🥰"
         )
 
-        await update.message.reply_text(text)
+        await msg.edit_text(text)
 
-    except Exception:
-        await update.message.reply_text("❌ Info API / Network error")
+    except Exception as e:
+        await msg.edit_text("❌ Info API / network issue")
 
 # ---------- MAIN ----------
 def main():
