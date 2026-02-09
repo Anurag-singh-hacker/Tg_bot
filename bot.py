@@ -8,9 +8,7 @@ BOT_TOKEN = "8534778362:AAFRBJs6IEtOtsuoFBqQnbAfPVAiQcKC8ck"
 # ---------- START ----------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "👋 Welcome\n\nCommands:\n"
-        "/like 12345678\n"
-        "/info 12345678"
+        "👋 Welcome\n\nCommands:\n/like 12345678\n/info 12345678"
     )
 
 # ---------- LIKE ----------
@@ -21,12 +19,11 @@ async def like(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     uid = context.args[0]
 
-    # ⏳ Instant reply
     msg = await update.message.reply_text(
         "wait..... 😊\n🤩 By Anurag Singh ...."
     )
 
-    await asyncio.sleep(2)  # thodi der ka wait
+    await asyncio.sleep(2)
 
     try:
         url = f"https://mukesh-ult-like.vercel.app/like?uid={uid}&region=ind&key=UDIT"
@@ -46,7 +43,6 @@ async def like(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"☠️ Developer Anurag Singh"
         )
 
-        # ✏️ Edit same message
         await msg.edit_text(text)
 
     except Exception:
@@ -67,7 +63,7 @@ async def info(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await asyncio.sleep(2)
 
     try:
-        url = f"https://rohit-info.vercel.app/accinfo?uid={uid}&region=Ind"
+        url = f"http://danger-info-alpha.vercel.app/accinfo?uid={uid}&key=DANGERxINFO"
         r = requests.get(url, timeout=15)
         data = r.json()
 
