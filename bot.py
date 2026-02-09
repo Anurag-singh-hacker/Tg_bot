@@ -1,29 +1,27 @@
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 import requests
-import asyncio
 
 BOT_TOKEN = "8534778362:AAFRBJs6IEtOtsuoFBqQnbAfPVAiQcKC8ck"
 
 # ---------- START ----------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        "👋 Welcome\n\nCommands:\n/like 12345678\n/info 12345678"
+        "👋 Welcome\n\nCommands:\n"
+        "/like 12345678\n"
+        "/info 12345678\n"
+        "\n☠️ Developer Anurag Singh\n"
+            "☠️ Insta @anuragkumarsinghofficial 💙\n"
+            "😍 Follow For More 🥰"
     )
 
-# ---------- LIKE ----------
+# ---------- LIKE COMMAND ----------
 async def like(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
-        await update.message.reply_text("❌ Use:\n/like 12345678")
+        await update.message.reply_text("❌ Use like this:\n/like 12345678")
         return
 
     uid = context.args[0]
-
-    msg = await update.message.reply_text(
-        "wait..... 😊\n🤩 By Anurag Singh ...."
-    )
-
-    await asyncio.sleep(2)
 
     try:
         url = f"https://mukesh-ult-like.vercel.app/like?uid={uid}&region=ind&key=UDIT"
@@ -40,33 +38,30 @@ async def like(update: Update, context: ContextTypes.DEFAULT_TYPE):
             f"👽 UID : {data.get('UID', uid)}\n"
             f"status : {data.get('status', 'N/A')}\n"
             f"daily_limit : 20 Like 1 uid\n\n"
-            f"☠️ Developer Anurag Singh"
+            f"☠️ Developer Anurag Singh\n"
+            "☠️ Insta @anuragkumarsinghofficial 💙\n"
+            "😍 Follow For More 🥰 "
         )
 
-        await msg.edit_text(text)
+        await update.message.reply_text(text)
 
     except Exception:
-        await msg.edit_text("❌ API / Network error")
+        await update.message.reply_text("❌ API / Network error")
 
-# ---------- INFO ----------
+# ---------- INFO COMMAND ----------
 async def info(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not context.args:
-        await update.message.reply_text("❌ Use:\n/info 12345678")
+        await update.message.reply_text("❌ Use info like this:\n/info 12345678")
         return
 
     uid = context.args[0]
 
-    msg = await update.message.reply_text(
-        "wait..... 😊\n🤩 By Anurag Singh ...."
-    )
-
-    await asyncio.sleep(2)
-
     try:
-        url = f"http://danger-info-alpha.vercel.app/accinfo?uid={uid}&key=DANGERxINFO"
+        url = f"https://rohit-info.vercel.app/accinfo?uid={uid}&region=Ind"
         r = requests.get(url, timeout=15)
         data = r.json()
 
+        # Convert info JSON to clean text
         text = ""
         for k, v in data.items():
             text += f"{k} : {v}\n"
@@ -77,10 +72,10 @@ async def info(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "😍 Follow For More 🥰"
         )
 
-        await msg.edit_text(text)
+        await update.message.reply_text(text)
 
     except Exception:
-        await msg.edit_text("❌ Info API / Network error")
+        await update.message.reply_text("❌ Info API / Network error")
 
 # ---------- MAIN ----------
 def main():
